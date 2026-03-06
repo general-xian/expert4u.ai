@@ -1,13 +1,144 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>expert4u.AI</title>
-    <script type="module" crossorigin src="./assets/index-C2bRo7HE.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BEkbd4jA.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert4U.ai | 全球专家连接平台</title>
+    <style>
+        :root { --primary: #2563eb; --secondary: #64748b; --bg: #f8fafc; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: #1e293b; margin: 0; line-height: 1.6; }
+        
+        /* 导航栏 */
+        .nav { background: #fff; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
+        .lang-btns button { padding: 6px 12px; margin-left: 5px; border: 1px solid #e2e8f0; background: #fff; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+        button.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* 主体内容 */
+        .hero { padding: 80px 5%; text-align: center; max-width: 900px; margin: 0 auto; }
+        h1 { font-size: 3rem; margin-bottom: 20px; color: #0f172a; }
+        p.subtitle { font-size: 1.25rem; color: #475569; margin-bottom: 40px; }
+
+        /* 功能卡片区 */
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; padding: 0 5% 50px; }
+        .card { background: white; padding: 35px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s; }
+        .card:hover { transform: translateY(-5px); }
+        .card h3 { font-size: 1.5rem; margin-bottom: 15px; }
+        
+        /* 按钮样式 */
+        .btn-main { display: inline-block; padding: 15px 35px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; transition: 0.3s; border: none; cursor: pointer; font-size: 1rem; width: 100%; }
+        .btn-main:hover { background: #1d4ed8; box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
+        .btn-outline { background: white; color: var(--primary); border: 2px solid var(--primary); margin-top: 15px; }
+        .btn-outline:hover { background: #eff6ff; }
+
+        .footer { text-align: center; padding: 40px; color: #94a3b8; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="logo">Expert4U.ai</div>
+        <div class="lang-btns">
+            <button onclick="setLang('zh')" id="zh-btn">中文</button>
+            <button onclick="setLang('en')" id="en-btn">EN</button>
+            <button onclick="setLang('de')" id="de-btn">DE</button>
+            <button onclick="setLang('es')" id="es-btn">ES</button>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1 id="hero-title">连接全球智慧</h1>
+        <p class="subtitle" id="hero-desc">寻找顶尖专家解决您的商业难题，或分享您的专业见解。</p>
+    </div>
+
+    <div class="features">
+        <div class="card">
+            <h3 id="card1-title">企业/个人</h3>
+            <p id="card1-desc">发布您的咨询需求，我们为您匹配最合适的领域专家。</p>
+            <button class="btn-main" onclick="openForm('post')">
+                <span id="btn-post">立即发布需求</span>
+            </button>
+        </div>
+
+        <div class="card">
+            <h3 id="card2-title">专家入驻</h3>
+            <p id="card2-desc">加入全球专家库，将您的知识转化为商业价值。</p>
+            <button class="btn-main btn-outline" onclick="openForm('join')">
+                <span id="btn-join">申请成为专家</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="footer">
+        &copy; 2024 Expert4U.ai Global Connectivity.
+    </div>
+
+    <script>
+        // --- 1. 配置区域：请在此处填入你的钉钉表单链接 ---
+        const FORM_LINKS = {
+            post: "https://alidocs.dingtalk.com/i/nodes/P0MALyR8klkdLBZlcQjeN64KW3bzYmDO?utm_scene=person_space&iframeQuery=sheet_range%3Dkgqie6hm_4_7_1_1", 
+            join: "https://alidocs.dingtalk.com/i/nodes/9bN7RYPWdMvowDjMsb71qvARVZd1wyK0?utm_scene=person_space&iframeQuery=sheet_range%3Dkgqie6hm_12_4_1_1"
+        };
+
+        // --- 2. 多语言内容 ---
+        const content = {
+            zh: {
+                title: "连接全球智慧", desc: "寻找顶尖专家解决您的商业难题，或分享您的专业见解。",
+                c1t: "企业 / 个人", c1d: "发布您的咨询需求，我们为您匹配最合适的领域专家。",
+                c2t: "专家入驻", c2d: "加入全球专家库，将您的知识转化为商业价值。",
+                bp: "立即发布需求", bj: "申请成为专家"
+            },
+            en: {
+                title: "Connect Global Wisdom", desc: "Find top experts to solve business challenges or share your professional insights.",
+                c1t: "Clients", c1d: "Post your requirements and get matched with the right industry experts.",
+                c2t: "For Experts", c2d: "Join our global talent pool and monetize your professional knowledge.",
+                bp: "Post Requirement", bj: "Become an Expert"
+            },
+            de: {
+                title: "Globale Weisheit verbinden", desc: "Finden Sie Experten für geschäftliche Herausforderungen oder teilen Sie Ihr Wissen.",
+                c1t: "Kunden", c1d: "Posten Sie Ihre Anforderungen und finden Sie die richtigen Experten.",
+                c2t: "Für Experten", c2d: "Werden Sie Teil unseres globalen Experten-Pools.",
+                bp: "Bedarf posten", bj: "Experte werden"
+            },
+            es: {
+                title: "Conectar Sabiduría Global", desc: "Encuentre expertos para resolver desafíos comerciales o comparta su conocimiento.",
+                c1t: "Clientes", c1d: "Publique sus requisitos y conéctese con los expertos adecuados.",
+                c2t: "Para Expertos", c2d: "Únase a nuestro panel global de expertos.",
+                bp: "Publicar Requisito", bj: "Convertirse en Experto"
+            }
+        };
+
+        // --- 3. 核心功能逻辑 ---
+        function setLang(lang) {
+            const l = content[lang];
+            document.getElementById('hero-title').innerText = l.title;
+            document.getElementById('hero-desc').innerText = l.desc;
+            document.getElementById('card1-title').innerText = l.c1t;
+            document.getElementById('card1-desc').innerText = l.c1d;
+            document.getElementById('card2-title').innerText = l.c2t;
+            document.getElementById('card2-desc').innerText = l.c2d;
+            document.getElementById('btn-post').innerText = l.bp;
+            document.getElementById('btn-join').innerText = l.bj;
+
+            // 切换按钮高亮
+            document.querySelectorAll('.lang-btns button').forEach(b => b.classList.remove('active'));
+            document.getElementById(lang + '-btn').classList.add('active');
+            localStorage.setItem('expert4u_lang', lang);
+        }
+
+        // 打开表单的功能
+        function openForm(type) {
+            const url = FORM_LINKS[type];
+            if(url.includes("这里替换成")) {
+                alert("链接配置中，请稍后再试！");
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+
+        // 页面加载初始化
+        const savedLang = localStorage.getItem('expert4u_lang') || 'zh';
+        setLang(savedLang);
+    </script>
+</body>
 </html>
