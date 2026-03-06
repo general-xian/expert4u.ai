@@ -1,13 +1,147 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>expert4u.AI</title>
-    <script type="module" crossorigin src="./assets/index-C2bRo7HE.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BEkbd4jA.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert4U.ai | Global Expertise</title>
+    <style>
+        :root { --primary-blue: #2563eb; --text-dark: #0f172a; --text-gray: #64748b; --bg-light: #f8fafc; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-light); color: var(--text-dark); margin: 0; padding: 0; }
+        
+        .nav { background: white; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; sticky: top; }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary-blue); }
+        .lang-switch button { padding: 4px 10px; margin-left: 5px; border: 1px solid #e2e8f0; background: white; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        button.active { background: var(--primary-blue); color: white; border-color: var(--primary-blue); }
+
+        .hero { padding: 80px 20px; text-align: center; }
+        h1 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        .subtitle { color: var(--text-gray); max-width: 600px; margin: 0 auto 3rem; font-size: 1.1rem; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        .card { background: white; padding: 2.5rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); text-align: center; display: flex; flex-direction: column; }
+        
+        /* 保持原有的按钮 UI 风格 */
+        .cta-button { 
+            background: var(--primary-blue); 
+            color: white; 
+            padding: 12px 24px; 
+            border-radius: 0.5rem; 
+            text-decoration: none; 
+            font-weight: 600; 
+            margin-top: auto;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .cta-button:hover { opacity: 0.9; }
+        .cta-outline { background: white; color: var(--primary-blue); border: 2px solid var(--primary-blue); margin-top: 1rem; }
+
+        .footer { text-align: center; padding: 4rem 0; color: var(--text-gray); font-size: 0.875rem; }
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="logo">Expert4U.ai</div>
+        <div class="lang-switch">
+            <button onclick="setLanguage('zh')" id="btn-zh">中文</button>
+            <button onclick="setLanguage('en')" id="btn-en">EN</button>
+            <button onclick="setLanguage('de')" id="btn-de">DE</button>
+            <button onclick="setLanguage('es')" id="btn-es">ES</button>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1 id="txt-title">连接全球智慧</h1>
+        <p class="subtitle" id="txt-subtitle">寻找顶尖专家，解决全球商业挑战。</p>
+
+        <div class="grid">
+            <div class="card">
+                <h3 id="txt-c1-t">对于客户</h3>
+                <p id="txt-c1-d">发布您的具体项目需求，我们将为您匹配经过认证的专家。</p>
+                <button class="cta-button" onclick="navigateTo('post')">
+                    <span id="txt-btn-post">立即发布需求</span>
+                </button>
+            </div>
+            <div class="card">
+                <h3 id="txt-c2-t">对于专家</h3>
+                <p id="txt-c2-d">加入我们的精英顾问网络，向全球企业展示您的专业知识。</p>
+                <button class="cta-button cta-outline" onclick="navigateTo('join')">
+                    <span id="txt-btn-join">申请入驻专家库</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        &copy; 2024 Expert4U.ai. All rights reserved.
+    </footer>
+
+    <script>
+        // --- 补全逻辑 1: 钉钉链接配置 ---
+        const DINGTALK_URLS = {
+            post: "https://dg-form.dingtalk.com/...", // https://alidocs.dingtalk.com/notable/share/form/v018K4nyeZLG5pQPnLb_hERWDMS_Ch2kXl8
+            join: "https://dg-form.dingtalk.com/..."  // https://alidocs.dingtalk.com/notable/share/form/v01yBRq1ZPXEPAQyOdv_hERWDMS_9XYxdMt
+        };
+
+        // --- 补全逻辑 2: 语言包数据 ---
+        const i18n = {
+            zh: {
+                title: "连接全球智慧", subtitle: "寻找顶尖专家，解决全球商业挑战。",
+                c1t: "对于客户", c1d: "发布您的具体项目需求，我们将为您匹配经过认证的专家。",
+                c2t: "对于专家", c2d: "加入我们的精英顾问网络，向全球企业展示您的专业知识。",
+                bp: "立即发布需求", bj: "申请入驻专家库"
+            },
+            en: {
+                title: "Connecting Global Wisdom", subtitle: "Find top experts to solve your global business challenges.",
+                c1t: "For Clients", c1d: "Submit your project requirements and get matched with certified experts.",
+                c2t: "For Experts", c2d: "Join our elite network and showcase your expertise to the world.",
+                bp: "Post a Requirement", bj: "Apply to Join"
+            },
+            de: {
+                title: "Globale Expertise verbinden", subtitle: "Finden Sie Top-Experten für Ihre geschäftlichen Herausforderungen.",
+                c1t: "Für Kunden", c1d: "Posten Sie Ihren Bedarf und finden Sie zertifizierte Experten.",
+                c2t: "Für Experten", c2d: "Treten Sie unserem Elite-Netzwerk bei und zeigen Sie Ihr Wissen.",
+                bp: "Bedarf posten", bj: "Experte werden"
+            },
+            es: {
+                title: "Conectando Sabiduría Global", subtitle: "Encuentre expertos para resolver sus desafíos comerciales.",
+                c1t: "Para Clientes", c1d: "Publique sus requisitos y conéctese con expertos certificados.",
+                c2t: "Para Expertos", c2d: "Únase a nuestra red de élite y muestre su experiencia.",
+                bp: "Publicar Requisito", bj: "Postularse"
+            }
+        };
+
+        // --- 补全逻辑 3: 动作函数 ---
+        function setLanguage(lang) {
+            const data = i18n[lang];
+            document.getElementById('txt-title').innerText = data.title;
+            document.getElementById('txt-subtitle').innerText = data.subtitle;
+            document.getElementById('txt-c1-t').innerText = data.c1t;
+            document.getElementById('txt-c1-d').innerText = data.c1d;
+            document.getElementById('txt-c2-t').innerText = data.c2t;
+            document.getElementById('txt-c2-d').innerText = data.c2d;
+            document.getElementById('txt-btn-post').innerText = data.bp;
+            document.getElementById('txt-btn-join').innerText = data.bj;
+
+            // 按钮状态切换
+            document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + lang).classList.add('active');
+            localStorage.setItem('lang_pref', lang);
+        }
+
+        function navigateTo(type) {
+            const url = DINGTALK_URLS[type];
+            if (url.includes("...")) {
+                alert("链接正在配置中，请稍后再试。");
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+
+        // 初始化语言
+        const userLang = localStorage.getItem('lang_pref') || 'en';
+        setLanguage(userLang);
+    </script>
+</body>
 </html>
